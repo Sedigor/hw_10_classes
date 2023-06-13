@@ -4,10 +4,12 @@ class Field:
     pass
 
 class Name(Field):
-    pass
+    def __init__(self, name):
+        self.name = name
 
 class Phone(Field):
-    pass
+    def __init__(self, phone=None):
+        self.phone = phone
 
 class Record:
     def __init__(self, name):
