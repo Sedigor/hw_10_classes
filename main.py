@@ -3,34 +3,49 @@ from collections import UserDict
 class Field:
     pass
 
-class Name(Field):
+class Name:
     def __init__(self, name):
-        self.name = name
+        self.value = name
 
-class Phone(Field):
-    def __init__(self, phone=None):
-        self.phone = phone
+class Phone:
+    def __init__(self, phone):
+        self.value = phone
 
 class Record:
-    def __init__(self, name):
+    def __init__(self, name, phone):
         self.name = name
         self.phones = []
-        
-    def name(self):
-        return self.name
+        self.add_phone(phone)
 
     def add_phone(self, phone):
         self.phones.append(phone)
 
     def remove_phone(self, phone):
-        self.phones = [p for p in self.phones if p != phone]
+        self.phones = [p for p in self.phones if p.value != phone]
 
     def edit_phone(self, old_phone, new_phone):
-        for phone in self.phones:
-            if phone == old_phone:
-                phone.value = new_phone
+        for p in self.phones:
+            if p.value == old_phone:
+                p.value = new_phone
+                break
 
 class AddressBook(UserDict):
+    def __init__(self):
+        self.data = {}
+        
     def add_record(self, record):
-        key = record.name()
-        self.data[key] = record
+        self.data[record.name.value] = record
+        
+        
+if __name__ == "__main__":
+    name = Name('Bill')
+    phone = Phone('1234567890')
+    rec = Record(name, phone)
+    ab = AddressBook()
+    ab.add_record(rec)
+    assert isinstance(ab['Bill'], Record)
+    assert isinstance(ab['Bill'].name, Name)
+    assert isinstance(ab['Bill'].phones, list)
+    assert isinstance(ab['Bill'].phones[0], Phone)
+    assert ab['Bill'].phones[0].value == '1234567890'
+    print('All Ok)')
